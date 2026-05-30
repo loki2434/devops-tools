@@ -4,15 +4,15 @@ sudo apt update && sudo apt upgrade -y
 echo "Installing Git..."
 sudo apt install git -y
 echo "Installing Python"
-sudo apt install python3 
-log "Python installed: $(python3 --version)"
+sudo apt install python3 -y 
+echo "Python installed: $(python3 --version)"
 echo "Installing Docker..."
 sudo apt install docker.io -y
 echo "Installing kubernetes.CLI"
-sudo snap install k8s --classic -y
-sudo k8s bootstrap -y
-sudo k8s status -y
-sudo k8s kubectl get all --all-namespaces -y
+sudo snap install k8s --classic
+sudo k8s bootstrap
+sudo k8s status
+sudo k8s kubectl get all --all-namespaces
 echo "Installing Helm..."
 sudo curl -fsSL https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 echo "Installing Terraform(Iaac)" 
@@ -31,12 +31,13 @@ echo "Installing AWS-CLI..."
     unzip -q "$TMP/awscliv2.zip" -d "$TMP"
     "$TMP/aws/install" --update
     rm -rf "$TMP"
-    log "AWS CLI installed: $(aws --version)"
+    echo "AWS CLI installed: $(aws --version)"
 echo "Installing Jenkins(CI/CD)"
 sudo apt update
 sudo apt install fontconfig openjdk-21-jre -y
 java -version
-sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \ https://pkg.jenkins.io/debian-stable/jenkins.io-2026.key
+sudo wget -O /etc/apt/keyrings/jenkins-keyring.asc \ 
+	https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
 echo "deb [signed-by=/etc/apt/keyrings/jenkins-keyring.asc]" \ https://pkg.jenkins.io/debian-stable binary/ | sudo tee \ /etc/apt/sources.list.d/jenkins.list > /dev/null
 sudo apt update
 sudo apt install jenkins -y
@@ -52,16 +53,3 @@ echo "deb [signed-by=/etc/apt/keyrings/grafana.gpg] https://packages.grafana.com
 sudo apt install grafana -y
 sudo systemctl start grafana-server
 sudo systemctl enable grafana-server
-
-echo ""
-echo -e "${BOLD}${GREEN}╔══════════════════════════════════════════════════╗${RESET}"
-echo -e "${BOLD}${GREEN}║        DevOps Tools Installation Complete!       ║${RESET}"
-echo -e "${BOLD}${GREEN}╚══════════════════════════════════════════════════╝${RESET}"
-echo ""
-echo -e "${YELLOW}Reminders:${RESET}"
-echo "  • Log out and back in for docker group to take effect."
-echo "  • Run 'aws configure', 'az login', 'gcloud init' to authenticate cloud CLIs."
-echo "  • Jenkins admin password: /var/lib/jenkins/secrets/initialAdminPassword"
-echo "  • Grafana default login: admin / admin  →  http://localhost:3000"
-echo "  • Prometheus UI: http://localhost:9090"
-echo ""
